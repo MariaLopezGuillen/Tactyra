@@ -18,11 +18,9 @@
                 <!-- Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                    <x-nav-link
-                        :href="route('dashboard')"
-                        :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 
-                        {{ __('Dashboard') }}
+                        {{ __('Inicio') }}
 
                     </x-nav-link>
 
@@ -37,18 +35,18 @@
 
                     <x-slot name="trigger">
 
-                        <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:text-gray-700">
+                        <button
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white rounded-md hover:text-gray-700">
 
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0
                                         L10 10.586l3.293-3.293a1 1 0
                                         111.414 1.414l-4 4a1 1 0
                                         01-1.414 0l-4-4a1 1 0
-                                        010-1.414z"/>
+                                        010-1.414z" />
                                 </svg>
                             </div>
 
@@ -66,8 +64,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <button
-                                type="submit"
+                            <button type="submit"
                                 class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
 
                                 {{ __('Log Out') }}
@@ -85,25 +82,16 @@
             <!-- HAMBURGER -->
             <div class="-me-2 flex items-center sm:hidden">
 
-                <button
-                    @click="open = ! open"
+                <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-100">
 
                     <svg class="h-6 w-6" viewBox="0 0 24 24">
 
-                        <path
-                            :class="{'hidden': open}"
-                            class="inline-flex"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"/>
+                        <path :class="{'hidden': open}" class="inline-flex" stroke="currentColor" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
 
-                        <path
-                            :class="{'hidden': ! open}"
-                            class="hidden"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"/>
+                        <path :class="{'hidden': ! open}" class="hidden" stroke="currentColor" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
 
                     </svg>
 
@@ -121,9 +109,7 @@
 
         <div class="pt-2 pb-3 space-y-1">
 
-            <x-responsive-nav-link
-                :href="route('dashboard')"
-                :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 
                 {{ __('Dashboard') }}
 
@@ -156,8 +142,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <button
-                        type="submit"
+                    <button type="submit"
                         class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
 
                         {{ __('Log Out') }}

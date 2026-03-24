@@ -3,37 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Player;
 
 class AttendanceController extends Controller
 {
+
     public function store(Request $request)
-{
+    {
 
-$attendance = $request->attendance;
+        $attendance = $request->attendance ?? [];
 
-$totalSessions = 3; // lunes, miercoles, jueves
-$totalPlayers = count($attendance);
+        $totalSessions = 3; // lunes, miércoles, jueves
 
-$misses = 0;
+        $players = Player::all();
 
-foreach($attendance as $player){
+        $playersAttendance = [];
 
-foreach($player as $day){
+        foreach($players as $player){
 
-if(!$day){
-$misses++;
-}
+            $days = $attendance[$player->id] ?? [];
 
-}
+            $present = count($days);
 
-}
+            $missed = $totalSessions - $present;
 
-$totalPossible = $totalPlayers * $totalSessions;
+            $percentage = ($missed / $totalSessions) * 100;
 
-$percentage = ($misses / $totalPossible) * 100;
+            $playersAttendance[] = [
+                'name' => $player->name,
+                'percentage' => round($percentage)
+            ];
 
-return redirect()->route('dashboard')
-->with('attendance_percentage', round($percentage));
+        }
 
-}
+        // ordenar de menor a mayor (0% primero)
+        usort($playersAttendance, function ($a, $b) {
+            return $a['percentage'] <=> $b['percentage'];
+        });
+
+        return redirect()->route('dashboard')
+            ->with('attendance_players', $playersAttendance);
+
+    }
+
 }

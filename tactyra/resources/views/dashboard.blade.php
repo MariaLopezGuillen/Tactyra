@@ -1,401 +1,354 @@
 <x-app-layout>
 
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
-<div class="tactyra-container">
+    <div class="dashboard-page">
 
-<div class="dashboard-top">
+        <div class="tactyra-container">
 
-<!-- FORMULARIO -->
-<div class="card">
+            <div class="dashboard-top">
 
-<h2>Añadir jugador</h2>
+                <!-- FORMULARIO -->
 
-<form action="{{ route('players.store') }}" method="POST">
-@csrf
+                <div class="card">
 
-<input type="text" name="name" placeholder="Nombre jugador" required>
+                    <h2>Añadir jugador</h2>
 
-<input type="number" name="number" placeholder="Dorsal (opcional)">
+                    <form action="{{ route('players.store') }}" method="POST">
+                        @csrf
 
-<input type="text" name="club" placeholder="Club" required>
+                        <input type="text" name="name" placeholder="Nombre jugador" required>
 
-<input type="text" name="category" placeholder="Categoría" required>
+                        <input type="number" name="number" placeholder="Dorsal (opcional)">
 
-<select name="position" required>
+                        <!-- CLUB CON AUTOCOMPLETADO -->
 
-<option value="">Seleccionar posición</option>
-<option value="Portero">Portero</option>
-<option value="Lateral Derecho">Lateral Derecho</option>
-<option value="Lateral Izquierdo">Lateral Izquierdo</option>
-<option value="Defensa Central">Defensa Central</option>
-<option value="Mediocentro">Mediocentro</option>
-<option value="Mediapunta">Mediapunta</option>
-<option value="Extremo Derecho">Extremo Derecho</option>
-<option value="Extremo Izquierdo">Extremo Izquierdo</option>
-<option value="Delantero">Delantero</option>
+                        <input type="text" name="club" placeholder="Club" list="clubs" required>
 
-</select>
+                        <datalist id="clubs">
 
-<input type="number" name="age" placeholder="Edad">
+                            @foreach ($clubs as $club)
+                                <option value="{{ $club }}"></option>
+                            @endforeach
 
-<h3>Habilidades</h3>
+                        </datalist>
+                        <select name="category" id="edit_category">
 
-<div class="skills">
+                            <option value="">Seleccionar categoría</option>
+                            <option value="Baby">Baby</option>
+                            <option value="Prebenjamín">Prebenjamín</option>
+                            <option value="Benjamín">Benjamín</option>
+                            <option value="Alevín">Alevín</option>
+                            <option value="Infantil">Infantil</option>
+                            <option value="Cadete">Cadete</option>
+                            <option value="Juvenil">Juvenil</option>
+                            <option value="Senior">Senior</option>
 
-<input type="number" name="speed" placeholder="Velocidad">
-<input type="number" name="passing" placeholder="Pase">
-<input type="number" name="shooting" placeholder="Tiro">
-<input type="number" name="defense" placeholder="Defensa">
-<input type="number" name="physical" placeholder="Físico">
 
-</div>
+                        </select>
 
-<button type="submit" class="btn-green">
-Guardar jugador
-</button>
 
-</form>
+                        <select name="position" required>
 
-</div>
+                            <option value="">Seleccionar posición</option>
+                            <option value="Portero">Portero</option>
+                            <option value="Lateral Derecho">Lateral Derecho</option>
+                            <option value="Lateral Izquierdo">Lateral Izquierdo</option>
+                            <option value="Defensa Central">Defensa Central</option>
+                            <option value="Mediocentro">Mediocentro</option>
+                            <option value="Mediapunta">Mediapunta</option>
+                            <option value="Extremo Derecho">Extremo Derecho</option>
+                            <option value="Extremo Izquierdo">Extremo Izquierdo</option>
+                            <option value="Delantero">Delantero</option>
 
+                        </select>
 
-<!-- ESTADISTICAS -->
+                        <input type="number" name="age" placeholder="Edad">
 
-<div class="card">
+                        <h3>Habilidades</h3>
 
-<h2>Estadísticas</h2>
+                        <div class="skills">
 
-<div class="stat-box">
+                            <input type="number" name="speed" placeholder="Velocidad">
+                            <input type="number" name="passing" placeholder="Pase">
+                            <input type="number" name="shooting" placeholder="Tiro">
+                            <input type="number" name="defense" placeholder="Defensa">
+                            <input type="number" name="physical" placeholder="Físico">
 
-<p>Total jugadores</p>
+                        </div>
 
-<h3>{{ $players->count() }}</h3>
+                        <button type="submit" class="btn-green">
+                            Guardar jugador
+                        </button>
 
-</div>
+                    </form>
 
-</div>
+                </div>
 
-</div>
 
+                <!-- ESTADISTICAS -->
 
+                <div class="card">
 
-<!-- TABLA -->
+                    <h2>Estadísticas</h2>
 
-<div class="table-wrapper">
+                    <div class="stat-box">
 
-<table>
+                        <p>Total jugadores</p>
 
-<thead>
+                        <h3>{{ $players->count() }}</h3>
 
-<tr>
-<th>Nombre</th>
-<th>Club</th>
-<th>Posición</th>
-<th>Dorsal</th>
-<th>Edad</th>
-<th>Vel</th>
-<th>Pase</th>
-<th>Tiro</th>
-<th>Def</th>
-<th>Fís</th>
-<th>Media</th>
-<th>Acciones</th>
-</tr>
+                    </div>
 
-</thead>
+                </div>
 
-<tbody>
+            </div>
 
-@forelse($players as $player)
 
-<tr>
 
-<td>{{ $player->name }}</td>
-<td>{{ $player->club }}</td>
-<td>{{ $player->position }}</td>
-<td>{{ $player->number ?? '-' }}</td>
-<td>{{ $player->age }}</td>
-<td>{{ $player->speed }}</td>
-<td>{{ $player->passing }}</td>
-<td>{{ $player->shooting }}</td>
-<td>{{ $player->defense }}</td>
-<td>{{ $player->physical }}</td>
+            <!-- TABLA -->
 
-<td class="overall">
-{{ $player->overall }}
-</td>
+            <div class="table-wrapper">
 
-<td class="actions">
+                <table>
 
-<button 
-class="btn-icon edit"
-onclick='openEditModal(
-{{ $player->id }},
-@json($player->name),
-@json($player->club),
-@json($player->category),
-@json($player->position),
-{{ $player->number ?? "null" }},
-{{ $player->age ?? "null" }}
-)'>
-✏
-</button>
+                    <thead>
 
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Club</th>
+                            <th>Posición</th>
+                            <th>Dorsal</th>
+                            <th>Edad</th>
+                            <th>Categoría</th>
+                            <th>Vel</th>
+                            <th>Pase</th>
+                            <th>Tiro</th>
+                            <th>Def</th>
+                            <th>Fís</th>
+                            <th>Media</th>
+                            <th>Acciones</th>
+                        </tr>
 
-<button 
-class="btn-icon delete"
-onclick="openDeleteModal({{ $player->id }})">
-🗑
-</button>
+                    </thead>
 
-</td>
+                    <tbody>
 
-</tr>
+                        @forelse($players as $player)
+                                                    <tr>
 
-@empty
+                                                        <td>{{ $player->name }}</td>
+                                                        <td>{{ $player->club }}</td>
+                                                        <td>{{ $player->position }}</td>
+                                                        <td>{{ $player->number ?? '-' }}</td>
+                                                        <td>{{ $player->age }}</td>
+                                                        <td>{{ $player->category }}</td>
+                                                        <td>{{ $player->speed }}</td>
+                                                        <td>{{ $player->passing }}</td>
+                                                        <td>{{ $player->shooting }}</td>
+                                                        <td>{{ $player->defense }}</td>
+                                                        <td>{{ $player->physical }}</td>
 
-<tr>
-<td colspan="12">No hay jugadores registrados</td>
-</tr>
+                                                        <td class="overall">
+                                                            {{ $player->overall }}
+                                                        </td>
 
-@endforelse
+                                                        <td class="actions">
 
-</tbody>
+                                                            <button class="btn-icon edit" onclick='openEditModal(
+                            {{ $player->id }},
+                            @json($player->name),
+                            @json($player->club),
+                            @json($player->category),
+                            @json($player->position),
+                            {{ $player->number ?? 'null' }},
+                            {{ $player->age ?? 'null' }}
+                            )'>
 
-</table>
+                                                                ✏
 
-</div>
+                                                            </button>
 
-</div>
+                                                            <button class="btn-icon delete" onclick="openDeleteModal({{ $player->id }})">
 
+                                                                🗑
 
+                                                            </button>
 
-<!-- MODAL EDITAR -->
+                                                        </td>
 
-<div id="editModal" class="modal">
+                                                    </tr>
 
-<div class="modal-content">
+                        @empty
 
-<span class="close" onclick="closeEditModal()">✖</span>
+                            <tr>
 
-<h2>Editar jugador</h2>
+                                <td colspan="12">
+                                    No hay jugadores registrados
+                                </td>
 
-<form id="editForm" method="POST">
+                            </tr>
+                        @endforelse
 
-@csrf
-@method('PUT')
+                    </tbody>
 
-<input type="text" name="name" id="edit_name">
-<input type="number" name="number" id="edit_number">
-<input type="text" name="club" id="edit_club">
-<input type="text" name="category" id="edit_category">
+                </table>
 
-<select name="position" id="edit_position">
+            </div>
 
-<option value="Portero">Portero</option>
-<option value="Lateral Derecho">Lateral Derecho</option>
-<option value="Lateral Izquierdo">Lateral Izquierdo</option>
-<option value="Defensa Central">Defensa Central</option>
-<option value="Mediocentro">Mediocentro</option>
-<option value="Mediapunta">Mediapunta</option>
-<option value="Extremo Derecho">Extremo Derecho</option>
-<option value="Extremo Izquierdo">Extremo Izquierdo</option>
-<option value="Delantero">Delantero</option>
+        </div>
 
-</select>
 
-<input type="number" name="age" id="edit_age">
 
-<button type="submit" class="btn-green">
-Guardar cambios
-</button>
+        <!-- MODAL EDITAR -->
 
-</form>
+        <div id="editModal" class="modal">
 
-</div>
+            <div class="modal-content">
 
-</div>
+                <span class="close" onclick="closeEditModal()">✖</span>
 
+                <h2>Editar jugador</h2>
 
+                <form id="editForm" method="POST">
 
-<!-- MODAL ELIMINAR -->
+                    @csrf
+                    @method('PUT')
 
-<div id="deleteModal" class="delete-modal">
+                    <input type="text" name="name" id="edit_name">
+                    <input type="number" name="number" id="edit_number">
+                    <input type="text" name="club" id="edit_club">
+                    <select name="category" id="edit_category">
 
-<div class="delete-modal-box">
 
-<div class="delete-icon">⚠</div>
+                        <option value="Baby">Baby</option>
+                        <option value="Prebenjamín">Prebenjamín</option>
+                        <option value="Benjamín">Benjamín</option>
+                        <option value="Alevín">Alevín</option>
+                        <option value="Infantil">Infantil</option>
+                        <option value="Cadete">Cadete</option>
+                        <option value="Juvenil">Juvenil</option>
+                        <option value="Senior">Senior</option>
 
-<h2>Eliminar jugador</h2>
 
-<p>¿Estás seguro de que deseas eliminar este jugador?</p>
+                    </select>
 
-<div class="delete-actions">
+                    <select name="position" id="edit_position">
 
-<button class="btn-cancel" onclick="closeDeleteModal()">
-Cancelar
-</button>
+                        <option value="Portero">Portero</option>
+                        <option value="Lateral Derecho">Lateral Derecho</option>
+                        <option value="Lateral Izquierdo">Lateral Izquierdo</option>
+                        <option value="Defensa Central">Defensa Central</option>
+                        <option value="Mediocentro">Mediocentro</option>
+                        <option value="Mediapunta">Mediapunta</option>
+                        <option value="Extremo Derecho">Extremo Derecho</option>
+                        <option value="Extremo Izquierdo">Extremo Izquierdo</option>
+                        <option value="Delantero">Delantero</option>
 
-<form id="deleteForm" method="POST">
+                    </select>
 
-@csrf
-@method('DELETE')
+                    <input type="number" name="age" id="edit_age">
 
-<button type="submit" class="btn-delete">
-Sí, eliminar
-</button>
+                    <button type="submit" class="btn-green">
+                        Guardar cambios
+                    </button>
 
-</form>
+                </form>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
-</div>
 
 
+        <!-- MODAL ELIMINAR -->
 
-<script>
+        <div id="deleteModal" class="delete-modal">
 
-function openEditModal(id,name,club,category,position,number,age){
+            <div class="delete-modal-box">
 
-let modal=document.getElementById("editModal");
+                <div class="delete-icon">⚠</div>
 
-modal.style.display="flex";
+                <h2>Eliminar jugador</h2>
 
-document.getElementById("edit_name").value=name ?? "";
-document.getElementById("edit_number").value=number ?? "";
-document.getElementById("edit_club").value=club ?? "";
-document.getElementById("edit_category").value=category ?? "";
-document.getElementById("edit_position").value=position ?? "";
-document.getElementById("edit_age").value=age ?? "";
+                <p>¿Estás seguro de que deseas eliminar este jugador?</p>
 
-document.getElementById("editForm").action="/players/"+id;
+                <div class="delete-actions">
 
-}
+                    <button class="btn-cancel" onclick="closeDeleteModal()">
+                        Cancelar
+                    </button>
 
-function closeEditModal(){
-document.getElementById("editModal").style.display="none";
-}
+                    <form id="deleteForm" method="POST">
 
-function openDeleteModal(id){
+                        @csrf
+                        @method('DELETE')
 
-let modal=document.getElementById("deleteModal");
+                        <button type="submit" class="btn-delete">
+                            Sí, eliminar
+                        </button>
 
-modal.style.display="flex";
+                    </form>
 
-document.getElementById("deleteForm").action="/players/"+id;
+                </div>
 
-}
+            </div>
 
-function closeDeleteModal(){
-document.getElementById("deleteModal").style.display="none";
-}
+        </div>
 
-window.onclick=function(event){
 
-let editModal=document.getElementById("editModal");
-let deleteModal=document.getElementById("deleteModal");
 
-if(event.target==editModal){
-editModal.style.display="none";
-}
+        <script>
+            function openEditModal(id, name, club, category, position, number, age) {
 
-if(event.target==deleteModal){
-deleteModal.style.display="none";
-}
+                let modal = document.getElementById("editModal");
 
-}
+                modal.style.display = "flex";
 
+                document.getElementById("edit_name").value = name ?? "";
+                document.getElementById("edit_number").value = number ?? "";
+                document.getElementById("edit_club").value = club ?? "";
+                document.getElementById("edit_position").value = position ?? "";
+                document.getElementById("edit_age").value = age ?? "";
 
-@if ($errors->any())
+                document.getElementById("editForm").action = "/players/" + id;
 
-<div style="background:#ffdddd;padding:10px;border-radius:6px;margin-bottom:10px">
+            }
 
-<ul>
+            function closeEditModal() {
+                document.getElementById("editModal").style.display = "none";
+            }
 
-@foreach ($errors->all() as $error)
+            function openDeleteModal(id) {
 
-<li>{{ $error }}</li>
+                let modal = document.getElementById("deleteModal");
 
-@endforeach
+                modal.style.display = "flex";
 
-</ul>
+                document.getElementById("deleteForm").action = "/players/" + id;
 
-</div>
+            }
 
-@endif
-</script>
+            function closeDeleteModal() {
+                document.getElementById("deleteModal").style.display = "none";
+            }
 
-<h1>Falta de Asistencia</h1>
-<div class="card">
+            window.onclick = function (event) {
 
-<h2>Control de asistencia semanal</h2>
+                let editModal = document.getElementById("editModal");
+                let deleteModal = document.getElementById("deleteModal");
 
-<form action="{{ route('attendance.store') }}" method="POST">
+                if (event.target == editModal) {
+                    editModal.style.display = "none";
+                }
 
-@csrf
+                if (event.target == deleteModal) {
+                    deleteModal.style.display = "none";
+                }
 
-<table class="attendance-table">
+            }
+        </script>
 
-<thead>
-<tr>
-<th>Jugador</th>
-<th>Lunes</th>
-<th>Miércoles</th>
-<th>Jueves</th>
-</tr>
-</thead>
+    </div>
 
-<tbody>
-
-@foreach($players as $player)
-
-<tr>
-
-<td>{{ $player->name }}</td>
-
-<td>
-<input type="checkbox" name="attendance[{{ $player->id }}][monday]" value="1">
-</td>
-
-<td>
-<input type="checkbox" name="attendance[{{ $player->id }}][wednesday]" value="1">
-</td>
-
-<td>
-<input type="checkbox" name="attendance[{{ $player->id }}][thursday]" value="1">
-</td>
-
-</tr>
-
-@endforeach
-
-</tbody>
-
-</table>
-
-<button class="btn-green">
-Guardar asistencia
-</button>
-
-</form>
-
-</div>
-@if(session('attendance_percentage'))
-
-<div class="card">
-
-<h3>Faltas de asistencia de la semana</h3>
-
-<p style="font-size:24px;color:#24b04a">
-
-{{ session('attendance_percentage') }} %
-
-</p>
-
-</div>
-
-@endif
 </x-app-layout>

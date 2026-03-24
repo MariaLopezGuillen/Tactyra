@@ -11,7 +11,13 @@ class DashboardController extends Controller
         // obtener jugadores
         $players = Player::latest()->get();
 
-        // enviar siempre la variable a la vista
-        return view('dashboard', compact('players'));
+        // obtener lista de clubes únicos
+        $clubs = Player::select('club')
+            ->whereNotNull('club')
+            ->distinct()
+            ->pluck('club');
+
+        // enviar datos a la vista
+        return view('dashboard', compact('players','clubs'));
     }
 }
